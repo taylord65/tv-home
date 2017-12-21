@@ -110,7 +110,7 @@ class App extends Component {
 
   getNBAData(){
     let proxy = 'https://cors-anywhere.herokuapp.com/';
-    let url = 'http://stats.nba.com/scores/' + Date.now().toLocaleString();
+    let url = 'http://stats.nba.com/scores/';
 
     axios.get(proxy + url)
       .then(res => {
@@ -124,6 +124,9 @@ class App extends Component {
         var gameInfo = JSON.parse(string.match(new RegExp(gameInfo_variable + "(.*)" + secondvariable))[1]);
 
         processNBAData(this, lineScore, gameInfo);
+    })
+    .catch(function (error) {
+      console.log(error);
     });
   }
 
@@ -135,7 +138,7 @@ class App extends Component {
     return (
       <div className="App">
       <header>
-        <Clock className="timeDisplay" format={'h:mm a'} ticking={true} timezone={'US/Eastern'} />
+        <Clock className="timeDisplay" format={'h:mm'} ticking={true} timezone={'US/Eastern'} />
       </header>
       <main>
         {this.state.nbaData ? (
@@ -144,11 +147,13 @@ class App extends Component {
               <div className="nbaGame" key={index}>
                 <div className="team">
                   <img src={item.teamA.imgSrc} alt="teamIcon"/>
-                  <span>{item.teamA.name}</span>
+                  <span>{item.teamA.label}</span>
+                  <span>{item.teamA.wins_losses}</span>
                 </div>
                 <div className="team">
                   <img src={item.teamH.imgSrc} alt="teamIcon"/>
-                  <span>{item.teamH.name}</span>
+                  <span>{item.teamH.label}</span>
+                  <span>{item.teamH.wins_losses}</span>
                 </div>
               </div>
             ))}
@@ -158,7 +163,6 @@ class App extends Component {
             <h1>Loading</h1>
           </div>
         }
-
       </main>
         <div className="linkSection" ref={input => input && input.focus()} {...ArrowKeysReact.events} tabIndex="1" onKeyPress={this.handleEnterPress}>
           {this.state.links.map((item, index) => (

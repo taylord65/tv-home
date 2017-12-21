@@ -3,8 +3,6 @@ export default function processNBAData(self, scores, data) {
 
     for (var i = data.length - 1; i >= 0; i--) {
 
-      console.log(data[i]);
-
       let game = {
         teamA: {
           name: null,
@@ -13,7 +11,8 @@ export default function processNBAData(self, scores, data) {
         teamH: {
           name: null,
           imgSrc: null
-        }
+        },
+        time: null
       };
 
       let snippet = data[i].GAMECODE.split('/');
@@ -22,6 +21,8 @@ export default function processNBAData(self, scores, data) {
 
       game.teamA.name = teamsSnippet.substring(0,3);
       game.teamH.name = teamsSnippet.substring(3,6);
+
+      game.time = data[i].GAME_STATUS_TEXT;
 
       if(game.teamA.name === 'NOP'){
         game.teamA.name = 'NO';
@@ -46,8 +47,20 @@ export default function processNBAData(self, scores, data) {
     };
 
     for (var j = scores.length - 1; j >= 0; j--) {
-      console.log(scores[j]);
+
+    	for (var k = nbaData.length - 1; k >= 0; k--) {
+    		if(nbaData[k].teamA.name === scores[j].TEAM_ABBREVIATION){
+    			nbaData[k].teamA.label = scores[j].TEAM_NAME;
+    			nbaData[k].teamA.wins_losses = scores[j].TEAM_WINS_LOSSES;
+    		}
+    		if(nbaData[k].teamH.name === scores[j].TEAM_ABBREVIATION){
+    			nbaData[k].teamH.label = scores[j].TEAM_NAME;
+    			nbaData[k].teamH.wins_losses = scores[j].TEAM_WINS_LOSSES;
+    		}
+    	};
     };
+
+    console.log(nbaData);
 
     self.setState({
       nbaData: nbaData

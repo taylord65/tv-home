@@ -7,15 +7,11 @@ headerHeight = 10%;
 mainHeight = 70%;
 linkSectionHeight = 20%;
 
+//NBA Game Box
 initialNBAGameOffset = 5%;
 NBAGameSpacing = 1em;
-NBAGameBoxWidth = 22em;
-
-gradientFill()
-  background: #74ebd5;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+NBAGameBoxHeight = 22em;
+NBAGameBoxRatio = 1.2;
 
 .App 
   text-align center
@@ -36,7 +32,6 @@ main
   color grey
   position absolute
   top 2em
-  left "calc(%s + %s)" % (initialNBAGameOffset NBAGameSpacing)
   left initialNBAGameOffset
   
 .linkSection
@@ -85,8 +80,8 @@ main
   overflow-y: hidden;
   white-space: nowrap;
   .nbaGame
-    height NBAGameBoxWidth
-    width NBAGameBoxWidth
+    height NBAGameBoxHeight
+    width "calc(%s * %s)" % (NBAGameBoxHeight NBAGameBoxRatio)
     margin-left NBAGameSpacing
     margin-top 5em
     background-color white

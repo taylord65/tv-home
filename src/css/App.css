@@ -17,7 +17,6 @@ main {
   color: #808080;
   position: absolute;
   top: 2em;
-  left: calc(5% + 1em);
   left: 5%;
 }
 .linkSection {
@@ -73,7 +72,7 @@ main {
 }
 .nbaContainers .nbaGame {
   height: 22em;
-  width: 22em;
+  width: calc(22em * 1.2);
   margin-left: 1em;
   margin-top: 5em;
   background-color: #fff;
