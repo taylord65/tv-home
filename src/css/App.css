@@ -6,13 +6,19 @@
   background-color: #f3f2f2;
   font-size: 15px;
 }
+header {
+  height: 10%;
+}
 main {
-  height: 80%;
-  padding: 1em 0em 1em 1em;
+  height: 70%;
 }
 .timeDisplay {
   font-weight: 600;
   color: #808080;
+  position: absolute;
+  top: 2em;
+  left: calc(5% + 1em);
+  left: 5%;
 }
 .linkSection {
   width: 100%;
@@ -66,11 +72,18 @@ main {
   white-space: nowrap;
 }
 .nbaContainers .nbaGame {
-  height: 50%;
-  width: 400px;
+  height: 22em;
+  width: 22em;
   margin-left: 1em;
+  margin-top: 5em;
   background-color: #fff;
   display: inline-block;
+}
+.nbaContainers .nbaGame:first-child {
+  margin-left: 5%;
+}
+.nbaContainers .nbaGame:last-child {
+  margin-right: 1em;
 }
 .nbaContainers .nbaGame .team {
   width: 50%;

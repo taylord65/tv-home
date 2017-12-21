@@ -3,6 +3,7 @@ import ArrowKeysReact from 'arrow-keys-react';
 import './css/App.css';
 import Clock from 'react-live-clock';
 import axios from 'axios';
+import processNBAData from './helpers/processNBAData';
 
 
 class App extends Component {
@@ -107,55 +108,6 @@ class App extends Component {
     };
   }
 
-  processNBAData(scores, data){
-
-    var nbaData = [];
-
-    for (var i = data.length - 1; i >= 0; i--) {
-
-      console.log(data[i]);
-
-      let game = {
-        teamA: {
-          name: null,
-          imgSrc: null
-        },
-        teamH: {
-          name: null,
-          imgSrc: null
-        }
-      };
-
-      let snippet = data[i].GAMECODE.split('/');
-
-      let teamsSnippet = snippet[1];
-
-      game.teamA.name = teamsSnippet.substring(0,3);
-      game.teamH.name = teamsSnippet.substring(3,6);
-
-      if(game.teamA.name === 'NOP'){
-        game.teamA.name = 'NO';
-      }
-
-      if(game.teamH.name === 'NOP'){
-        game.teamH.name = 'NO';
-      }
-
-      game.teamA.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamA.name + '.png';
-      game.teamH.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamH.name + '.png';
-
-      nbaData.push(game);
-    };
-
-    for (var j = scores.length - 1; j >= 0; j--) {
-      console.log(scores[j]);
-    };
-
-    this.setState({
-      nbaData: nbaData
-    });
-  }
-
   getNBAData(){
     let proxy = 'https://cors-anywhere.herokuapp.com/';
     let url = 'http://stats.nba.com/scores/' + Date.now().toLocaleString();
@@ -171,7 +123,7 @@ class App extends Component {
         var lineScore = JSON.parse(string.match(new RegExp(lineScore_variable + "(.*)" + secondvariable))[1]);
         var gameInfo = JSON.parse(string.match(new RegExp(gameInfo_variable + "(.*)" + secondvariable))[1]);
 
-        this.processNBAData(lineScore, gameInfo);
+        processNBAData(this, lineScore, gameInfo);
     });
   }
 
@@ -182,9 +134,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <main>
+      <header>
         <Clock className="timeDisplay" format={'h:mm a'} ticking={true} timezone={'US/Eastern'} />
-
+      </header>
+      <main>
         {this.state.nbaData ? (
           <div className="nbaContainers">
             {this.state.nbaData.map((item, index) => (

@@ -3,6 +3,14 @@ fontSize = 15px
 activeColor = #56a6e5;
 bgColor = #f3f2f2;
 
+headerHeight = 10%;
+mainHeight = 70%;
+linkSectionHeight = 20%;
+
+initialNBAGameOffset = 5%;
+NBAGameSpacing = 1em;
+NBAGameBoxWidth = 22em;
+
 gradientFill()
   background: #74ebd5;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
@@ -17,17 +25,23 @@ gradientFill()
   background-color bgColor
   font-size fontSize
   
+header
+  height headerHeight
+  
 main
-  height 80%
-  padding 1em 0em 1em 1em
+  height mainHeight
 
 .timeDisplay
   font-weight 600
   color grey
+  position absolute
+  top 2em
+  left "calc(%s + %s)" % (initialNBAGameOffset NBAGameSpacing)
+  left initialNBAGameOffset
   
 .linkSection
   width 100%
-  height 20%
+  height linkSectionHeight
   position absolute
   bottom 0
   .linkItem
@@ -71,11 +85,16 @@ main
   overflow-y: hidden;
   white-space: nowrap;
   .nbaGame
-    height 50%
-    width 400px
-    margin-left 1em
+    height NBAGameBoxWidth
+    width NBAGameBoxWidth
+    margin-left NBAGameSpacing
+    margin-top 5em
     background-color white
     display inline-block
+    &:first-child
+      margin-left initialNBAGameOffset
+    &:last-child
+      margin-right NBAGameSpacing
     .team
       width 50%
       height 100%
