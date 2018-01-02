@@ -5,6 +5,7 @@ import Clock from 'react-live-clock';
 import axios from 'axios';
 import processNBAData from './helpers/processNBAData';
 import getGentiStreams from './helpers/getGentiStreams';
+import getTeamNameFromLabel from './helpers/getTeamNameFromLabel';
 
 class App extends Component {
 
@@ -108,15 +109,9 @@ class App extends Component {
     };
   }
 
-  formatGameTime(timeString){
-    //"data-123".replace('data-','');
-    return timeString.replace(' ET', '');
-  }
-
   getNBAData(){
     let proxy = 'https://cors-anywhere.herokuapp.com/';
     let url = 'http://stats.nba.com/scores/';
-    //let streamsUrl = 'http://www.reddit.com/r/nbastreams/new.json?sort=new';
     let streamsUrl = 'http://www.genti.stream/';
 
     axios.get(proxy + url)
@@ -126,8 +121,7 @@ class App extends Component {
 
         axios.get(proxy + streamsUrl)
           .then(res => {
-            //getStreams(this, res);
-            getGentiStreams(this,res);
+            getGentiStreams(this,res, getTeamNameFromLabel);
         })
         .catch(function(error){
           console.log("Error getting stream posts");
@@ -142,10 +136,6 @@ class App extends Component {
     this.getNBAData();
   }
 
-  goToStream(url){
-    window.open(url);
-  }
-
   render() {
     return (
       <div className="App">
@@ -156,7 +146,7 @@ class App extends Component {
         {this.state.nbaData ? (
           <div className="nbaContainers">
             {this.state.nbaData.map((item, index) => (
-              <div className="nbaGame" key={index} onClick={(e) => this.goToStream(item.link)}>
+              <div className="nbaGame" key={index} onClick={(e) => window.open(item.link)}>
                 <div className="team">
                   <img src={item.teamA.imgSrc} alt="teamIcon"/>
                   <span>{item.teamA.label}</span>
@@ -168,7 +158,7 @@ class App extends Component {
                   <span className="wlRecord">{item.teamH.wins_losses}</span>
                 </div>
                 <div className="timeArea">
-                  <span>{this.formatGameTime(item.time)}</span>
+                  <span>{ item.time.replace(' ET', '') }</span>
                 </div>
               </div>
             ))}
