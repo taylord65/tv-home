@@ -1,4 +1,14 @@
-export default function processNBAData(self, scores, data) {
+export default function processNBAData(self, res) {
+
+    var string = res.data;
+
+    var lineScore_variable = "window.nbaStatsLineScore = ";
+    var gameInfo_variable = "window.nbaStatsGameInfo = ";
+    var secondvariable = ";";
+
+    var scores = JSON.parse(string.match(new RegExp(lineScore_variable + "(.*)" + secondvariable))[1]);
+    var data = JSON.parse(string.match(new RegExp(gameInfo_variable + "(.*)" + secondvariable))[1]);
+
     var nbaData = [];
 
     for (var i = data.length - 1; i >= 0; i--) {
@@ -59,8 +69,6 @@ export default function processNBAData(self, scores, data) {
     		}
     	};
     };
-
-    console.log(nbaData);
 
     self.setState({
       nbaData: nbaData
