@@ -42,4 +42,6 @@ export default function getGentiStreams(self, res, getTeamNameFromLabel) {
 			}
 		};
 	};
+
+	console.log(self.state.nbaData);
 }

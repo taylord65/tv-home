@@ -14,6 +14,8 @@ class App extends Component {
     this.state = {
       playNoise: false,
       linkSelection: 0,
+      gameSelection: 0,
+      gameSelectionMode: false,
       links: [
         {
           id: 0,
@@ -32,19 +34,49 @@ class App extends Component {
           name: 'Liveleak',
           url: 'http://Liveleak.com',
           icon: 'liveleak.svg'
+        },
+        {
+          id: 3,
+          name: 'Google Maps',
+          url: 'http://www.google.ca/maps',
+          icon: 'navigation.svg'
         }
       ],
       nbaData: null
     };
     ArrowKeysReact.config({
       left: () => {
-        this.setState({
-          linkSelection: this.changeLink('LEFT')
-        });
+
+        if(this.state.gameSelectionMode){
+          this.setState({
+            gameSelection: this.changeGame('LEFT')
+          });
+        } else {
+          this.setState({
+            linkSelection: this.changeLink('LEFT')
+          });
+        }
       },
       right: () => {
+
+        if(this.state.gameSelectionMode){
+          this.setState({
+            gameSelection: this.changeGame('RIGHT')
+          });
+        } else {
+          this.setState({
+            linkSelection: this.changeLink('RIGHT')
+          });
+        }
+      },
+      up: () => {
         this.setState({
-          linkSelection: this.changeLink('RIGHT')
+          gameSelectionMode: true
+        });
+      },
+      down: () => {
+        this.setState({
+          gameSelectionMode: false
         });
       }
     });
@@ -54,7 +86,39 @@ class App extends Component {
   }
 
   isActiveLink(id){
-    return id === this.state.linkSelection;
+    //When not in game selection mode, highlight the active link
+    if(!this.state.gameSelectionMode){
+      return id === this.state.linkSelection;
+    }
+  }
+
+  isActiveGame(index){
+    //In game selection mode highlight the active game.
+    if(this.state.gameSelectionMode){
+      return index === this.state.gameSelection;
+    }
+  }
+
+  changeGame(dir){
+
+    let newSelection = this.state.gameSelection;
+
+    let view = document.getElementById("gamesView");
+
+    let scrollAmount = 396;
+   
+    if(dir === 'LEFT'){
+      if(newSelection !== 0){
+        newSelection--;
+        view.scrollLeft -= scrollAmount;
+      }
+    } else if (dir === 'RIGHT'){
+      if(newSelection !== (this.state.nbaData.length-1)){
+        newSelection++;
+        view.scrollLeft += scrollAmount;
+      }
+    }
+    return newSelection;
   }
 
   changeLink(dir){
@@ -64,12 +128,10 @@ class App extends Component {
     if(dir === 'LEFT'){
       if(newSelection !== 0){
         newSelection--;
-        this.setState({playNoise: true});
       }
     } else if (dir === 'RIGHT'){
       if(newSelection !== (this.state.links.length-1)){
         newSelection++;
-        this.setState({playNoise: true});
       }
     }
 
@@ -78,22 +140,33 @@ class App extends Component {
 
   handleEnterPress(event) {
     if(event.charCode === 13) {
+
       event.preventDefault();
       event.stopPropagation();
 
-      for (var i = this.state.links.length - 1; i >= 0; i--) {
-        if(this.state.links[i].id === this.state.linkSelection){
-          window.open(this.state.links[i].url);
-        }
-      };
+      if(this.state.gameSelectionMode){
+        for (var j = this.state.nbaData.length - 1; j >= 0; j--) {
+          if(j === this.state.gameSelection){
+            window.open(this.state.nbaData[j].link);            
+          }
+        };
+      } else {
+        for (var i = this.state.links.length - 1; i >= 0; i--) {
+          if(this.state.links[i].id === this.state.linkSelection){
+            window.open(this.state.links[i].url);
+          }
+        };
+      }
+
     }
   }
 
-  hoverHandle(id,e){
-    this.setState({
-      linkSelection: id,
-      playNoise: true
-    });
+  hoverHandle(id,e, game){
+    if(game){
+      this.setState({gameSelection: id, gameSelectionMode: true});
+    } else {
+      this.setState({linkSelection: id, gameSelectionMode: false});
+    }
   }
 
   setLinkAndNavigate(id,e){
@@ -109,7 +182,7 @@ class App extends Component {
     };
   }
 
-  getNBAData(){
+  componentDidMount() {
     let proxy = 'https://cors-anywhere.herokuapp.com/';
     let url = 'http://stats.nba.com/scores/';
     let streamsUrl = 'http://www.genti.stream/';
@@ -132,40 +205,45 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
-    this.getNBAData();
-  }
-
   render() {
     return (
       <div className="App">
       <header>
         <Clock className="timeDisplay" format={'h:mm'} ticking={true} timezone={'US/Eastern'} />
+{/*        <div className="screenSaver">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="768" height="768" viewBox="0 0 768 768">
+            <path fill="#444444" d="M498 537l-34.5-130.5 105-87-135-7.5-49.5-126-49.5 126-136.5 7.5 106.5 87-34.5 130.5 114-73.5zM640.5 384c0 34.5 28.5 64.5 63 64.5v127.5c0 34.5-28.5 64.5-63 64.5h-513c-34.5 0-63-30-63-64.5v-127.5c36 0 63-30 63-64.5s-28.5-64.5-63-64.5v-127.5c0-34.5 28.5-64.5 63-64.5h513c34.5 0 63 30 63 64.5v127.5c-34.5 0-63 30-63 64.5z"></path>
+          </svg>
+          <span>Screensaver</span>
+        </div>*/}
       </header>
       <main>
         {this.state.nbaData ? (
-          <div className="nbaContainers">
+          <div className="nbaContainers" id="gamesView">
             {this.state.nbaData.map((item, index) => (
-              <div className="nbaGame" key={index} onClick={(e) => window.open(item.link)}>
+              <div className={"nbaGame " + (this.isActiveGame(index) ? 'activeGame' : null)} 
+                  key={index}
+                  onMouseOver={(e) => this.hoverHandle(index, e, true)} 
+                  onClick={(e) => window.open(item.link)}>
                 <div className="team">
                   <img src={item.teamA.imgSrc} alt="teamIcon"/>
                   <span>{item.teamA.label}</span>
                   <span className="wlRecord">{item.teamA.wins_losses}</span>
+                </div>
+                <div className="timeArea">
+                  <span>{ item.time.replace(' ET', '') }</span>
                 </div>
                 <div className="team">
                   <img src={item.teamH.imgSrc} alt="teamIcon"/>
                   <span>{item.teamH.label}</span>
                   <span className="wlRecord">{item.teamH.wins_losses}</span>
                 </div>
-                <div className="timeArea">
-                  <span>{ item.time.replace(' ET', '') }</span>
-                </div>
               </div>
             ))}
           </div>
         ) : 
           <div className="nbaContainers">
-            <h1>Loading</h1>
+            <img id="loadingGif" src={process.env.PUBLIC_URL + '/loading.gif'} alt="loading"/>
           </div>
         }
       </main>
@@ -173,7 +251,7 @@ class App extends Component {
           {this.state.links.map((item, index) => (
             <div className={"linkItem " + (this.isActiveLink(item.id) ? 'active' : null)} 
                 key={index} 
-                onMouseOver={(e) => this.hoverHandle(item.id, e)}
+                onMouseOver={(e) => this.hoverHandle(item.id, e, false)}
                 onClick={(e) => this.setLinkAndNavigate(item.id, e)}>
                 <div className="circleContainer">
                   <img src={process.env.PUBLIC_URL + '/icons/' + item.icon} alt="icon"/>

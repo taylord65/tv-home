@@ -21,6 +21,46 @@ export default function getTeamNameFromLabel(label){
 	    	return 'TOR';
 	    case 'Orlando Magic':
 	    	return 'ORL';
+	    case 'Philadelphia 76ers':
+	    	return 'PHI';
+	    case 'Cleveland Cavaliers':
+	    	return 'CLE';
+	    case 'Detroit Pistons':
+	    	return 'DET';
+	    case 'Indiana Pacers':
+	    	return 'IND';
+	    case 'Atlanta Hawks':
+	    	return 'ATL';
+	    case 'Charlotte Hornets':
+	    	return 'CHA';
+	    case 'Miami Heat':
+	    	return 'MIA';
+	    case 'Washington Wizards':
+	    	return 'WAS';
+	    case 'Denver Nuggets':
+	    	return 'DEN';
+	    case 'Oklahoma City Thunder':
+	    	return 'OKC';
+	    case 'Utah Jazz':
+	    	return 'UTH';
+	    case 'Golden State Warriors':
+	    	return 'GSW';
+	    case 'Los Angeles Clippers':
+	    	return 'LAC';
+	    case 'Phoenix Suns':
+	    	return 'PHX';
+	    case 'Sacramento Kings':
+	    	return 'SAC';
+	    case 'Dallas Mavericks':
+	    	return 'DAL';
+	    case 'Houston Rockets':
+	    	return 'HOU';
+	    case 'Memphis Grizzlies':
+	    	return 'MEM';
+	    case 'New Orleans Pelicans':
+	    	return 'NO';
+	    case 'San Antonio Spurs':
+	    	return 'SAS';
 	    default:
 	    	return '';
 	}
