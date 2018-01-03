@@ -12,7 +12,6 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      playNoise: false,
       linkSelection: 0,
       gameSelection: 0,
       gameSelectionMode: false,
@@ -171,8 +170,7 @@ class App extends Component {
 
   setLinkAndNavigate(id,e){
     this.setState({
-      linkSelection: id,
-      playNoise: true
+      linkSelection: id
     });
 
     for (var j = this.state.links.length - 1; j >= 0; j--) {

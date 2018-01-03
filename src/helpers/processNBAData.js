@@ -34,6 +34,8 @@ export default function processNBAData(self, res) {
 
       game.time = data[i].GAME_STATUS_TEXT;
 
+
+
       if(game.teamA.name === 'NOP'){
         game.teamA.name = 'NO';
       }
@@ -50,8 +52,28 @@ export default function processNBAData(self, res) {
         game.teamH.name = 'UTH';
       }
 
+      //The images have exceptions for NOP and UTA
       game.teamA.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamA.name + '.png';
       game.teamH.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamH.name + '.png';
+
+
+      //Revert back after
+      if(game.teamA.name === 'NO'){
+        game.teamA.name = 'NOP';
+      }
+
+      if(game.teamH.name === 'NO'){
+        game.teamH.name = 'NOP';
+      }
+
+      if(game.teamA.name === 'UTH'){
+        game.teamA.name = 'UTA';
+      }
+
+      if(game.teamH.name === 'UTH'){
+        game.teamH.name = 'UTA';
+      }
+
 
       nbaData.push(game);
     };
@@ -59,7 +81,7 @@ export default function processNBAData(self, res) {
     for (var j = scores.length - 1; j >= 0; j--) {
 
     	for (var k = nbaData.length - 1; k >= 0; k--) {
-    		if(nbaData[k].teamA.name === scores[j].TEAM_ABBREVIATION){
+    		if(nbaData[k].teamA.name === scores[j].TEAM_ABBREVIATION){          
     			nbaData[k].teamA.label = scores[j].TEAM_NAME;
     			nbaData[k].teamA.wins_losses = scores[j].TEAM_WINS_LOSSES;
     		}
