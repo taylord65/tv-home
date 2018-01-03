@@ -103,6 +103,7 @@ main {
   margin-top: 10%;
 }
 .nbaContainers .nbaGame {
+  cursor: pointer;
   height: 22em;
   width: calc(22em * 1.2);
   margin-left: 1em;
