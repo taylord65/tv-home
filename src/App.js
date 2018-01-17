@@ -146,13 +146,21 @@ class App extends Component {
       if(this.state.gameSelectionMode){
         for (var j = this.state.nbaData.length - 1; j >= 0; j--) {
           if(j === this.state.gameSelection){
-            window.open(this.state.nbaData[j].link);            
+            if(this.state.nbaData[j].link){
+              window.open(this.state.nbaData[j].link);
+            } else {
+              window.open('https://www.reddit.com/r/nbastreams');
+            }          
           }
         };
       } else {
         for (var i = this.state.links.length - 1; i >= 0; i--) {
           if(this.state.links[i].id === this.state.linkSelection){
-            window.open(this.state.links[i].url);
+            if(this.state.links[i].url){
+              window.open(this.state.links[i].url);
+            } else {
+              window.open('https://www.reddit.com/r/nbastreams');
+            }
           }
         };
       }
@@ -178,6 +186,14 @@ class App extends Component {
         window.open(this.state.links[j].url);
       }
     };
+  }
+
+  handleGameClick(link){
+    if(link){
+      window.open(link);
+    } else {
+      window.open('https://www.reddit.com/r/nbastreams');
+    }
   }
 
   componentDidMount() {
@@ -222,7 +238,7 @@ class App extends Component {
               <div className={"nbaGame " + (this.isActiveGame(index) ? 'activeGame' : null)} 
                   key={index}
                   onMouseOver={(e) => this.hoverHandle(index, e, true)} 
-                  onClick={(e) => window.open(item.link)}>
+                  onClick={(e) => this.handleGameClick(item.link)}>
                 <div className="team">
                   <img src={item.teamA.imgSrc} alt="teamIcon"/>
                   <span>{item.teamA.label}</span>
