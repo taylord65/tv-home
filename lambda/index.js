@@ -2,6 +2,10 @@
 console.log('Loading hello world function');
  
 exports.handler = function(event, context, callback) {
+
+    var moment = require('moment');
+    const {fetchSubreddit} = require('fetch-subreddit');
+
     let name = "you";
     let city = 'World';
     let time = 'day';
@@ -48,25 +52,28 @@ exports.handler = function(event, context, callback) {
     let greeting = 'Good ' + time + ', ' + name + ' of ' + city + '. ';
     if (day) greeting += 'Happy ' + day + '!';
 
-    var responseBody = {
-        message: greeting,
-        input: event
-    };
-    
-    // The output from a Lambda proxy integration must be 
-    // of the following JSON object. The 'headers' property 
-    // is for custom response headers in addition to standard 
-    // ones. The 'body' property  must be a JSON string. For 
-    // base64-encoded payload, you must also set the 'isBase64Encoded'
-    // property to 'true'.
-    var response = {
-        statusCode: responseCode,
-        headers: {
-            "Access-Control-Allow-Origin" : "*",
-            "Access-Control-Allow-Credentials" : true
-        },
-        body: JSON.stringify(responseBody)
-    };
-    console.log("response: " + JSON.stringify(response))
-    callback(null, response);
+    fetchSubreddit('nbastreams').then(data => {
+
+        var responseBody = {
+            message: greeting,
+            input: event,
+            time: moment().format(),
+            nbaUrls: data[0].urls
+        };
+        
+        var response = {
+            statusCode: responseCode,
+            headers: {
+                "Access-Control-Allow-Origin" : "*",
+                "Access-Control-Allow-Credentials" : true
+            },
+            body: JSON.stringify(responseBody)
+        };
+        
+        callback(null, response);
+    })
+    .catch(function(error){
+        console.log(error);
+    });
+
 };

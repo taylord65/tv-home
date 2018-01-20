@@ -210,7 +210,7 @@ class App extends Component {
 
     axios.post('https://wv6orehzyl.execute-api.us-east-1.amazonaws.com/prod/Seattle?time=evening', headers)
       .then(res => {
-        console.log(res.data.message);
+        console.log(res);
       })
       .catch(function (error) {
       console.log("Error in lambda");
