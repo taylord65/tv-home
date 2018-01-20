@@ -4,8 +4,7 @@ import './css/App.css';
 import Clock from 'react-live-clock';
 import axios from 'axios';
 import processNBAData from './helpers/processNBAData';
-import getGentiStreams from './helpers/getGentiStreams';
-import getTeamNameFromLabel from './helpers/getTeamNameFromLabel';
+import matchLinksToNBAData from './helpers/matchLinksToNBAData';
 
 class App extends Component {
 
@@ -197,38 +196,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+
     let proxy = 'https://cors-anywhere.herokuapp.com/';
     let url = 'http://stats.nba.com/scores/';
-    let streamsUrl = 'http://www.genti.stream/';
-
-    //TEST LAMBDA
-    let headers = {
-      'Content-Type': 'application/json',
-      'day': 'Thursday',
-      'x-amz-docs-region': 'us-east-2'
-    };
-
-    axios.post('https://wv6orehzyl.execute-api.us-east-1.amazonaws.com/prod/Seattle?time=evening', headers)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(function (error) {
-      console.log("Error in lambda");
-      });
-    //END TEST
 
     axios.get(proxy + url)
-      .then(res => {
-
-        processNBAData(this, res);
-
-        axios.get(proxy + streamsUrl)
-          .then(res => {
-            getGentiStreams(this,res, getTeamNameFromLabel);
-        })
-        .catch(function(error){
-          console.log("Error getting stream posts");
-        });
+    .then(res => {
+      processNBAData(this, res);
+      matchLinksToNBAData(this, axios);
     })
     .catch(function (error) {
       console.log("Error getting game data");

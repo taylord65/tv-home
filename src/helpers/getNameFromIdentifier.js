@@ -1,0 +1,67 @@
+export default function getTeamNameFromLabel(identifier){
+
+	switch(identifier) {
+	    case 'boston':
+	        return 'BOS';
+	    case 'brooklyn':
+	        return 'BKN';
+	    case 'york':
+	        return 'NYK';
+	    case 'lakers':
+	        return 'LAL';
+	    case 'minnesota':
+	    	return 'MIN';
+	    case 'portland':
+	    	return 'POR';
+	    case 'chicago':
+	    	return 'CHI';
+	    case 'milwaukee':
+	    	return 'MIL';
+	    case 'toronto':
+	    	return 'TOR';
+	    case 'orlando':
+	    	return 'ORL';
+	    case 'philadelphia':
+	    	return 'PHI';
+	    case 'cleveland':
+	    	return 'CLE';
+	    case 'detroit':
+	    	return 'DET';
+	    case 'indiana':
+	    	return 'IND';
+	    case 'atlanta':
+	    	return 'ATL';
+	    case 'charlotte':
+	    	return 'CHA';
+	    case 'miami':
+	    	return 'MIA';
+	    case 'washington':
+	    	return 'WAS';
+	    case 'denver':
+	    	return 'DEN';
+	    case 'oklahoma':
+	    	return 'OKC';
+	    case 'utah':
+	    	return 'UTH';
+	    case 'golden':
+	    	return 'GSW';
+	    case 'clippers':
+	    	return 'LAC';
+	    case 'phoenix':
+	    	return 'PHX';
+	    case 'sacramento':
+	    	return 'SAC';
+	    case 'dallas':
+	    	return 'DAL';
+	    case 'houston':
+	    	return 'HOU';
+	    case 'memphis':
+	    	return 'MEM';
+	    case 'orleans':
+	    	return 'NO';
+	    case 'antonio':
+	    	return 'SAS';
+	    default:
+	    	return '';
+	}
+}
