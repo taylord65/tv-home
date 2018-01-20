@@ -201,6 +201,22 @@ class App extends Component {
     let url = 'http://stats.nba.com/scores/';
     let streamsUrl = 'http://www.genti.stream/';
 
+    //TEST LAMBDA
+    let headers = {
+      'Content-Type': 'application/json',
+      'day': 'Thursday',
+      'x-amz-docs-region': 'us-east-2'
+    };
+
+    axios.post('https://wv6orehzyl.execute-api.us-east-1.amazonaws.com/prod/Seattle?time=evening', headers)
+      .then(res => {
+        console.log(res.data.message);
+      })
+      .catch(function (error) {
+      console.log("Error in lambda");
+      });
+    //END TEST
+
     axios.get(proxy + url)
       .then(res => {
 
