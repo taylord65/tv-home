@@ -200,6 +200,8 @@ class App extends Component {
     let proxy = 'https://cors-anywhere.herokuapp.com/';
     let url = 'http://stats.nba.com/scores/';
 
+    axios.defaults.headers.post['Access-Control-Allow-Methods'] = 'PATCH, DELETE, POST, GET, OPTIONS';
+
     axios.get(proxy + url)
     .then(res => {
       processNBAData(this, res);
