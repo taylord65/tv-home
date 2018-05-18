@@ -5,6 +5,7 @@
   "dependencies": {
     "arrow-keys-react": "^1.0.6",
     "axios": "^0.17.1",
+    "axios-retry": "^3.1.0",
     "babel-polyfill": "^6.26.0",
     "fetch": "^1.1.0",
     "react": "^16.2.0",
