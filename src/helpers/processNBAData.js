@@ -53,8 +53,8 @@ export default function processNBAData(self, res) {
       }
 
       //The images have exceptions for NOP and UTA
-      game.teamA.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamA.name + '.png';
-      game.teamH.imgSrc = 'http://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamH.name + '.png';
+      game.teamA.imgSrc = 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamA.name + '.png';
+      game.teamH.imgSrc = 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/' + game.teamH.name + '.png';
 
 
       //Revert back after
