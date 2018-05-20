@@ -78,7 +78,7 @@ export default function matchLinksToNBAData(self, axios) {
 
     let lambdaHeaders = {'Content-Type': 'application/json', 'day': 'Thursday', 'x-amz-docs-region': 'us-east-2'};
 
-    axios.post('https://wv6orehzyl.execute-api.us-east-1.amazonaws.com/prod/Seattle?time=evening', lambdaHeaders)
+    axios.post('https://cors-anywhere.herokuapp.com/https://wv6orehzyl.execute-api.us-east-1.amazonaws.com/prod/Seattle?time=evening', lambdaHeaders)
     .then(res => {
       parseLinks(res.data.nbaUrls); 
     })
